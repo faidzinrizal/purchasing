@@ -32,25 +32,8 @@ class LaporanController extends Controller
     public function actionPenawaran()
     {
         $model = new Penawaran;
-        $query = $model->find();
 
-        // // grid filtering conditions
-        // $query->andFilterWhere([
-        //     'id' => $this->id,
-        //     'permintaan_id' => $this->permintaan_id,
-        //     'supplier_id' => $this->supplier_id,
-        //     'tanggal' => $this->tanggal,
-        // ]);
-
-        // $query->andFilterWhere(['like', 'no_surat', $this->no_surat])
-        //     ->andFilterWhere(['like', 'status', $this->status]);
-
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => false
-        ]);
-
+        $dataProvider = $this->actionGetData();
         return $this->render('penawaran', get_defined_vars());
     }
 
@@ -59,17 +42,19 @@ class LaporanController extends Controller
         $post = Yii::$app->request->post();
 
         $query = Penawaran::find();
+        if ($post) {
+            // // grid filtering conditions
+            // $query->andFilterWhere([
+            //     'id' => $post['id'],
+            //     'permintaan_id' => $post['permintaan_id'],
+            //     'supplier_id' => $post['supplier_id'],
+            //     'tanggal' => $post['tanggal'],
+            // ]);
+    
+            // $query->andFilterWhere(['like', 'no_surat', $post['no_surat']])
+            //     ->andFilterWhere(['like', 'status', $post['status']]);
+        }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $post['id'],
-            'permintaan_id' => $post['permintaan_id'],
-            'supplier_id' => $post['supplier_id'],
-            'tanggal' => $post['tanggal'],
-        ]);
-
-        $query->andFilterWhere(['like', 'no_surat', $post['no_surat']])
-            ->andFilterWhere(['like', 'status', $post['status']]);
 
 
         $dataProvider = new ActiveDataProvider([

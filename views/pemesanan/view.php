@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pemesanan */
 
-$this->title = $model->id;
+$this->title = $model->no_surat;
 $this->params['breadcrumbs'][] = ['label' => 'Pemesanans', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -91,7 +91,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div class="pembayaran-form">
 
-            <?= $form->field($pembayaran, 'pemesanan_id')->textInput(['value'=>$model_id]) ?>
+            <?= $form->field($pembayaran, 'pemesanan_id')->hiddenInput(['value'=>$model->id])->label(false) ?>
+            <?= $form->field($model, 'no_surat')->textInput(['value'=>$model->no_surat, 'readonly'=>true]) ?>
 
             <?= $form->field($model,'tanggal', ['inputOptions'=>['class'=>'form-control', 'disabled'=>'disabled']])->label('Tanggal Pemesanan'); ?>
 

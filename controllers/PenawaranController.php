@@ -110,6 +110,7 @@ class PenawaranController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'permintaan' => $permintaan,
                 'listData' => $listData,
                 'dataProviderBarang' => $dataProviderBarang,
             ]);

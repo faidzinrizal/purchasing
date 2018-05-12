@@ -14,7 +14,7 @@ use yii\jui\DatePicker;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'permintaan_id')->textInput() ?>
+    <?= $form->field($permintaan, 'no_permintaan')->textInput(['readonly'=>true]); ?>
 
     <?= $form->field($model, 'supplier_id')->dropDownList($listData, ['prompt' => '-- Pilih Supplier --']) ?>
 

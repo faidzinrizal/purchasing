@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Permintaan */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Permintaans', 'url' => ['index']];
+$this->title = $model->no_permintaan;
+$this->params['breadcrumbs'][] = ['label' => 'List Permintaan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="permintaan-view">

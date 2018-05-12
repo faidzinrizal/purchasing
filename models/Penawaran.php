@@ -51,8 +51,8 @@ class Penawaran extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'permintaan_id' => 'Permintaan ID',
-            'supplier_id' => 'Supplier ID',
+            'permintaan_id' => 'Permintaan',
+            'supplier_id' => 'Supplier',
             'no_surat' => 'No Surat',
             'tanggal' => 'Tanggal',
             'status' => 'Status',
