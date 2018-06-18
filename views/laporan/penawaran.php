@@ -1,9 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 use yii\grid\GridView;
 use yii\web\View;
+use yii\jui\DatePicker;
+use kartik\daterange\DateRangePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PembayaranSearch */
@@ -15,48 +18,99 @@ $this->params['breadcrumbs'][] = $this->title;
 <div>
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <div class='row'>
         <div class='col-md-3'>
-            <?= Html::textInput('Periode', '', ['class'=>'form-control', 'id'=>'dari', 'placeholder'=>'Periode']); ?>
+            <?php
+            echo '<label class="control-label">Periode</label>';
+            echo '<div class="input-group drp-container" style="width:100%">';
+            echo DateRangePicker::widget([
+                'name'=>'date_range_1',
+                'id'=>'periode',
+                'convertFormat'=>true,
+                'useWithAddon'=>true,
+                'pluginOptions'=>[
+                    'locale'=>[
+                        'format'=>'d-m-Y',
+                        'separator'=>' s.d ',
+                    ],
+                    'opens'=>'right'
+                ]
+            ]);
+            echo '</div>';
+            ?>
         </div>
         <div class='col-md-3'>
-            <?= Html::textInput('No surat', '', ['class'=>'form-control', 'id'=>'no_surat']); ?>
+            <?php
+            echo '<label class="control-label">No Surat</label>';
+            echo Html::textInput('No surat', '', ['class'=>'form-control', 'id'=>'no_surat']); 
+            ?>
         </div>
         <div class='col-md-3'>
-            <?= Html::textInput('No Permintaan', '', ['class'=>'form-control', 'id'=>'no_permintaan']); ?>
+            <?php
+            echo '<label class="control-label">No Permintaan</label>';
+            echo Html::textInput('No Permintaan', '', ['class'=>'form-control', 'id'=>'no_permintaan']); 
+            ?>
         </div>
         <div class='col-md-3'>
-            <?= Html::textInput('Nama Supplier', '', ['class'=>'form-control', 'id'=>'nama_supplier']); ?>
+            <?php
+            echo '<label class="control-label">Nama Supplier</label>';
+            echo Html::textInput('Nama Supplier', '', ['class'=>'form-control', 'id'=>'nama_supplier']); 
+            ?>
+        </div>
+        <div class='col-md-3'>
+            <?php
+            echo '<label class="control-label">Status</label>';
+            echo Html::DropDownList(
+                'Status', 
+                [],
+                [
+                    'Pending'=>'Pending',
+                    'Approve'=>'Approve',
+                    'Batal'=>'Batal',
+                ], 
+                ['class'=>'form-control','prompt'=>'--Pilih--', 'id'=>'status']
+            ); 
+            ?>
         </div>
     </div>
+    
+    <br>
+    <div class='row'>
+        <div class='col-md-12'>
+            <button class='btn btn-primary cari'>Cari</button>
+        </div>
+    </div>
+    <br>
 
-    <?php Pjax::begin(['id'=>'gv-penawaran']); ?>
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'no_surat',
-            'permintaan.no_permintaan',
-            'tanggal',
-            'supplier.nama:raw:Nama Supplier',
-            'status'
-        ],
-    ]); ?>
-    <?php Pjax::end(); ?>
+    <div class='gv-penawaran'>
+    </div>
 </div>
-
-<script>
-</script>
 
 
 <?php
 $this->registerJs(
     "
     $( document ).ready(function() {
-        $('#periode').datepicker();
+        $('.cari').trigger('click');
+    });
+
+    $('.cari').click(function() {
+        $.ajax({
+            type:'POST',
+            dataType: 'html',
+            data: {
+                periode: $('#periode').val(),
+                no_surat: $('#no_surat').val(),
+                no_permintaan: $('#no_permintaan').val(),
+                nama_supplier: $('#nama_supplier').val(),
+                status: $('#status').val(),
+            },
+            url: '" . Url::to(['laporan/grid-penawaran']) . "',
+            success: function(res) {
+                $('.gv-penawaran').html(res);
+            }
+        });
     });
     ",
     View::POS_READY

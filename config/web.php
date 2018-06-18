@@ -5,6 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Purchasing',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -60,13 +61,13 @@ $config = [
             ],
         ],
         
-        // 'view' => [
-        //     'theme' => [
-        //         'pathMap' => [
-        //            '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
-        //         ],
-        //     ],
-        // ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                   '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

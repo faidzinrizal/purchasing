@@ -139,7 +139,7 @@ use yii\grid\ActionColumn;
             },
             url: '<?= Url::to(['permintaan/tambahbarang']); ?>',
             success: function(res) {
-                console.log(res);
+                // console.log(res);
                 $('#gridbarang').html(res);
                 // $.pjax({container: '#pjax-grid-barang'});
             }
@@ -164,9 +164,9 @@ use yii\grid\ActionColumn;
 <?php
 $this->registerJs(
     "
-    $( document ).ready(function() {
-        $('#tanggal').datepicker();
-    });
+    // $( document ).ready(function() {
+    //     $('#tanggal').datepicker();
+    // });
     ",
     View::POS_READY
 );

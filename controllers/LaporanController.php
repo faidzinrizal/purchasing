@@ -4,19 +4,14 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Penawaran;
+use app\models\Permintaan;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * PembayaranController implements the CRUD actions for Pembayaran model.
- */
 class LaporanController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return [
@@ -29,39 +24,76 @@ class LaporanController extends Controller
         ];
     }
 
-    public function actionPenawaran()
-    {
-        $model = new Penawaran;
 
-        $dataProvider = $this->actionGetData();
-        return $this->render('penawaran', get_defined_vars());
+    public function actionPermintaan()
+    {
+        return $this->render('permintaan', get_defined_vars());
     }
 
-    public function actionGetData()
+    public function actionGridPermintaan()
     {
         $post = Yii::$app->request->post();
 
-        $query = Penawaran::find();
+        $query = Permintaan::find();
         if ($post) {
-            // // grid filtering conditions
-            // $query->andFilterWhere([
-            //     'id' => $post['id'],
-            //     'permintaan_id' => $post['permintaan_id'],
-            //     'supplier_id' => $post['supplier_id'],
-            //     'tanggal' => $post['tanggal'],
-            // ]);
-    
-            // $query->andFilterWhere(['like', 'no_surat', $post['no_surat']])
-            //     ->andFilterWhere(['like', 'status', $post['status']]);
+            if ($post['periode']) {
+                $periode = explode(' s.d ', $post['periode']);
+                $startDate = date('Y-m-d', strtotime($periode[0]));
+                $endDate = date('Y-m-d', strtotime($periode[1]));
+                $query = $query->andWhere(['between', 'tanggal', $startDate, $endDate]);
+            }
+            if ($post['no_permintaan']) {
+                $query = $query->andWhere(['LIKE', 'no_permintaan', $post['no_permintaan']]);
+            }
+            if ($post['status']) {
+                $query = $query->andWhere(['status' => $post['status']]);
+            }
         }
-
-
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => false
         ]);
-        return $dataProvider;
+        return $this->renderPartial('_partial/_grid_permintaan', get_defined_vars());
+    }
+
+    public function actionPenawaran()
+    {
+        return $this->render('penawaran', get_defined_vars());
+    }
+
+    public function actionGridPenawaran()
+    {
+        $post = Yii::$app->request->post();
+
+        $query = Penawaran::find()->joinWith('supplier');
+        if ($post) {
+            if ($post['periode']) {
+                $periode = explode(' s.d ', $post['periode']);
+                $startDate = date('Y-m-d', strtotime($periode[0]));
+                $endDate = date('Y-m-d', strtotime($periode[1]));
+                $query = $query->andWhere(['between', 'penawaran.tanggal', $startDate, $endDate]);
+            }
+            if ($post['nama_supplier']) {
+                $namaSupplier = $post['nama_supplier'];
+                $query = $query->andWhere(['LIKE', 'supplier.nama', $namaSupplier]);
+            }
+            if ($post['no_surat']) {
+                $query = $query->andWhere(['LIKE', 'penawaran.no_surat', $post['no_surat']]);
+            }
+            if ($post['no_permintaan']) {
+                $query = $query->andWhere(['LIKE', 'penawaran.no_permintaan', $post['no_permintaan']]);
+            }
+            if ($post['status']) {
+                $query = $query->andWhere(['penawaran.status' => $post['status']]);
+            }
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => false
+        ]);
+        return $this->renderPartial('_partial/_grid_penawaran', get_defined_vars());
     }
 
 }
