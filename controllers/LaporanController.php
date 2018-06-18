@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Penawaran;
 use app\models\Permintaan;
+use app\models\Pemesanan;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -57,6 +58,7 @@ class LaporanController extends Controller
         return $this->renderPartial('_partial/_grid_permintaan', get_defined_vars());
     }
 
+
     public function actionPenawaran()
     {
         return $this->render('penawaran', get_defined_vars());
@@ -95,5 +97,47 @@ class LaporanController extends Controller
         ]);
         return $this->renderPartial('_partial/_grid_penawaran', get_defined_vars());
     }
+    
+    
+    public function actionPemesanan()
+    {
+        return $this->render('pemesanan', get_defined_vars());
+    }
 
+    public function actionGridPemesanan()
+    {
+        $post = Yii::$app->request->post();
+
+        $query = Pemesanan::find()->joinWith('penawaran')->joinWith('penawaran.permintaan')->joinWith('penawaran.supplier');
+        if ($post) {
+            if ($post['periode']) {
+                $periode = explode(' s.d ', $post['periode']);
+                $startDate = date('Y-m-d', strtotime($periode[0]));
+                $endDate = date('Y-m-d', strtotime($periode[1]));
+                $query = $query->andWhere(['between', 'pemesanan.tanggal', $startDate, $endDate]);
+            }
+            if ($post['periode_penawaran']) {
+                $periode = explode(' s.d ', $post['periode_penawaran']);
+                $startDate = date('Y-m-d', strtotime($periode[0]));
+                $endDate = date('Y-m-d', strtotime($periode[1]));
+                $query = $query->andWhere(['between', 'penawaran.tanggal', $startDate, $endDate]);
+            }
+            if ($post['nama_supplier']) {
+                $namaSupplier = $post['nama_supplier'];
+                $query = $query->andWhere(['LIKE', 'supplier.nama', $namaSupplier]);
+            }
+            if ($post['no_surat']) {
+                $query = $query->andWhere(['LIKE', 'pemesanan.no_surat', $post['no_surat']]);
+            }
+            if ($post['no_surat_penawaran']) {
+                $query = $query->andWhere(['LIKE', 'penawaran.no_surat', $post['no_surat_penawaran']]);
+            }
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => false
+        ]);
+        return $this->renderPartial('_partial/_grid_pemesanan', get_defined_vars());
+    }
 }
