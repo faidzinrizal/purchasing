@@ -33,36 +33,60 @@
                     ['label' => 'Menu', 'options' => ['class' => 'header']],
                     [
                         'label' => 'Logistik',
-                        // 'icon' => 'share',
+                        'icon' => 'truck',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'Buat Permintaan', 'url' => ['/permintaan/create']],
+                            [
+                                'label' => 'Buat Permintaan', 
+                                'icon' => 'edit',
+                                'url' => ['/permintaan/create']
+                            ],
                         ],
                     ],
                     [
                         'label' => 'Keuangan',
-                        // 'icon' => 'share',
+                        'icon' => 'money',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'List Permintaan', 'url' => ['/permintaan/index']],
-                            ['label' => 'List Penawaran', 'url' => ['/penawaran/index']],
+                            [
+                                'label' => 'List Permintaan', 
+                                'icon' => 'list',
+                                'url' => ['/permintaan/index']
+                            ],
+                            [
+                                'label' => 'List Penawaran', 
+                                'icon' => 'list',
+                                'url' => ['/penawaran/index']
+                            ],
                         ],
                     ],
                     [
                         'label' => 'Direktur',
-                        // 'icon' => 'share',
+                        'icon' => 'industry',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'List Penawaran', 'url' => ['/penawaran/index']],
+                            [
+                                'label' => 'List Penawaran', 
+                                'icon' => 'list',
+                                'url' => ['/penawaran/index']
+                            ],
                         ],
                     ],
                     [
                         'label' => 'Master',
-                        // 'icon' => 'share',
+                        'icon' => 'database',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'Supplier', 'url' => ['/supplier/index']],
-                            ['label' => 'Barang', 'url' => ['/barang/index']],
+                            [
+                                'label' => 'Supplier', 
+                                'icon' => 'credit-card',
+                                'url' => ['/supplier/index']
+                            ],
+                            [
+                                'label' => 'Barang',
+                                'icon' => 'dropbox',
+                                'url' => ['/barang/index']
+                            ],
                         ],
                     ],
                     // ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
