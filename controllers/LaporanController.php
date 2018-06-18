@@ -6,6 +6,7 @@ use Yii;
 use app\models\Penawaran;
 use app\models\Permintaan;
 use app\models\Pemesanan;
+use app\models\Pembayaran;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -139,5 +140,43 @@ class LaporanController extends Controller
             'sort' => false
         ]);
         return $this->renderPartial('_partial/_grid_pemesanan', get_defined_vars());
+    }
+
+
+
+    public function actionPembayaran()
+    {
+        return $this->render('pembayaran', get_defined_vars());
+    }
+
+    public function actionGridPembayaran()
+    {
+        $post = Yii::$app->request->post();
+
+        $query = Pembayaran::find()
+            ->joinWith('pemesanan')
+            ->joinWith('pemesanan.penawaran')
+            ->joinWith('pemesanan.penawaran.supplier');
+        if ($post) {
+            if ($post['periode']) {
+                $periode = explode(' s.d ', $post['periode']);
+                $startDate = date('Y-m-d', strtotime($periode[0]));
+                $endDate = date('Y-m-d', strtotime($periode[1]));
+                $query = $query->andWhere(['between', 'pembayaran.tanggal', $startDate, $endDate]);
+            }
+            if ($post['no_surat_pemesanan']) {
+                $query = $query->andWhere(['LIKE', 'pemesanan.no_surat', $post['no_surat_pemesanan']]);
+            }
+            if ($post['nama_supplier']) {
+                $namaSupplier = $post['nama_supplier'];
+                $query = $query->andWhere(['LIKE', 'supplier.nama', $namaSupplier]);
+            }
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => false
+        ]);
+        return $this->renderPartial('_partial/_grid_pembayaran', get_defined_vars());
     }
 }
