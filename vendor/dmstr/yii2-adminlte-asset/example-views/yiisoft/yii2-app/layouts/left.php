@@ -89,6 +89,33 @@
                             ],
                         ],
                     ],
+                    [
+                        'label' => 'Laporan',
+                        'icon' => 'folder-open',
+                        'url' => '#',
+                        'items' => [
+                            [
+                                'label' => 'Laporan Permintaan', 
+                                'icon' => 'folder-open',
+                                'url' => ['/laporan/permintaan']
+                            ],
+                            [
+                                'label' => 'Laporan Penawaran', 
+                                'icon' => 'folder-open',
+                                'url' => ['/laporan/penawaran']
+                            ],
+                            [
+                                'label' => 'Laporan Pemesanan', 
+                                'icon' => 'folder-open',
+                                'url' => ['/laporan/pemesanan']
+                            ],
+                            [
+                                'label' => 'Laporan Pembayaran', 
+                                'icon' => 'folder-open',
+                                'url' => ['/laporan/pembayaran']
+                            ],
+                        ],
+                    ],
                     // ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     // ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     // ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
