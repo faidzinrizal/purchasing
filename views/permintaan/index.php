@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{lihat}{buatPenawaran}',
+                'template' => '{lihat}{buatPenawaran}{hapus}',
                 'buttons' => [
                     'lihat' => function($url, $model, $key) {
                         return Html::a(
@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         Url::to(['view', 'id'=> $model->id]),
                         [ 
                             'class'=>'btn btn-info btn-sm',
+                            'style'=>'margin-right: 5px;'
                         ]);
                     },
                     'buatPenawaran' => function($url, $model, $key) {
@@ -48,6 +49,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         Url::to(['penawaran/create', 'id_permintaan'=> $model->id]),
                         [ 
                             'class'=>'btn btn-primary btn-sm',
+                            'style'=>'margin-right: 5px;'
+                        ]);
+                    },
+                    'hapus' => function($url, $model, $key) {
+                        return Html::a(
+                        'Hapus',
+                        Url::to(['delete', 'id'=> $model->id]),
+                        [ 
+                            'class'=>'btn btn-danger btn-sm',
+                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                            'data-method' => 'post',
+                            'style' => $model->penawarans ? "display: none;" : "",
                         ]);
                     }
                 ]

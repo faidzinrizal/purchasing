@@ -24,14 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
-            'permintaan_id',
+            // 'permintaan_id',
             'supplier.nama',
             'no_surat',
             'tanggal',
             'status',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{lihatPermintaan}{lihat}{tambahPemesanan}',
+                'template' => '{lihatPermintaan}{lihat}{tambahPemesanan}{hapus}',
                 'buttons' => [
                     'lihat' => function($url, $model, $key) {
                         return Html::a(
@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         Url::to(['view', 'id' => $model->id]),
                         [ 
                             'class'=>'btn btn-info btn-sm',
+                            'style'=>'margin-right: 5px;'
                         ]);
                     },
                     'lihatPermintaan' => function($url, $model, $key) {
@@ -47,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         Url::to(['permintaan/view', 'id' => $model->permintaan->id]),
                         [ 
                             'class'=>'btn btn-primary btn-sm',
+                            'style'=>'margin-right: 5px;'
                         ]);
                     },
                     'tambahPemesanan' => function($url, $model, $key) {
@@ -56,6 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [ 
                             'class'=>'btn btn-success btn-sm',
                         ]);
+                        // $return   = '';
 
                         if ($model->pemesanans) {
                             $return = Html::a(
@@ -63,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             Url::to(['pemesanan/view', 'id'=>$model->pemesanans[0]->id]),
                             [ 
                                 'class'=>'btn btn-success btn-sm',
+                                'style'=>'margin-right: 5px;'
                             ]);
                         }
                         if ($model->status == 'Approve') {
@@ -70,6 +74,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         } else {
                             return '';
                         }
+                    },
+                    'hapus' => function($url, $model, $key) {
+                        return Html::a(
+                        'Hapus',
+                        Url::to(['delete', 'id'=> $model->id]),
+                        [ 
+                            'class'=>'btn btn-danger btn-sm',
+                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                            'data-method' => 'post',
+                            'style' => $model->penawaranDetails ? "display: none;" : "",
+                        ]);
                     }
                 ]
             ],
